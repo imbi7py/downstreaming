@@ -37,15 +37,24 @@ def project(name):
 
 @APP.route("/projects/<pname>/reviews/")
 def reviews(pname):
-    return flask.render_template("simple.html", content="reviews for project %s" % pname)
+    result = views.reviews(flask.g.db, pname)
+    return flask.render_template("project_reviews.html", **result.context)
 
-@APP.route("/projects/<pname>/reviews/<int:rid>")
+@APP.route("/projects/<pname>/reviews/<int:rid>", methods=["GET", "POST"])
+@fas_login_required
 def review(pname, rid):
-    return flask.render_template("simple.html", content="review %d" % rid)
+    result = views.review(
+        flask.g.db, flask.request.method, flask.request.form,
+        pname, rid)
+    return flask.render_template("project_review.html", **result.context)
 
-@APP.route("/projects/<pname>/reviews/new")
+@APP.route("/projects/<pname>/reviews/new", methods=["GET", "POST"])
+@fas_login_required
 def newreview(pname):
-    return flask.render_template("simple.html", content="new review for project %s" % pname)
+    result = views.newreview(
+        flask.g.db, flask.request.method, flask.request.form,
+        pname, flask.g.fas_user.username)
+    return flask.render_template("new_project_review.html", **result.context)
 
 
 @APP.route("/new", methods=["GET", "POST"])

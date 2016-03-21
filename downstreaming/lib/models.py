@@ -29,14 +29,14 @@ class Project(Base):
     # The state could use an Enum type, but we don't need the space-savings and
     # strict model checks that come with the added complexity in migrations.
     # TODO: when we setup a workflow engine, extract the entry state here
+    # TODO: derive the project state from the underlying review status
     state       = sa.Column(sa.String(64),
                             nullable=False, default="new", index=True)
     submitted   = sa.Column(sa.DateTime,
                             index=True, nullable=False, default=sa.func.now())
-    # TODO: extract requires from the spec file on push
     requires    = sa.Column(sa.Integer,
                             sa.ForeignKey("projects.id", onupdate="cascade"))
-    reviews     = sa.orm.relationship("Review", backref="project",
+    reviews     = sa.orm.relationship("Review", back_populates="project",
                                       order_by="Review.id")
 
     def __repr__(self):
@@ -77,12 +77,11 @@ class Review(Base):
     project_id = sa.Column(sa.Integer,
                            sa.ForeignKey("projects.id",
                            ondelete="cascade", onupdate="cascade"))
-    commit_id  = sa.Column(sa.String(128), index=True, nullable=False)
+    project    = sa.orm.relationship("Project", back_populates="reviews")
+    reason = sa.Column(sa.Text, nullable=False)
     date_start = sa.Column(sa.DateTime,
                            index=True, nullable=False, default=sa.func.now())
     date_end   = sa.Column(sa.DateTime, index=True)
-    srpm_filename = sa.Column(sa.String(255))
-    spec_filename = sa.Column(sa.String(255))
     reviewers_obj = sa.orm.relationship("Reviewer")
     reviewers  = association_proxy('reviewers_obj', 'reviewer_name')
 

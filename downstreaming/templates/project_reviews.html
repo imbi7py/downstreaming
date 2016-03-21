@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Reviews for {{ project.name }}</h1>
+
+Go to <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a>
+
+{% if reviews|length == 0 %}
+  <p>No project reviews yet.</p>
+{% else %}
+  <p>{{ reviews|length }} reviews.</p>
+  {% with last_review = project.last_review %}
+    <p>
+      Latest review: <a href="{{ url_for("review", pname=project.name, rid=last_review.id) }}">{{ last_review.id }}</a>
+    </p>
+    {% if reviews|length > 1 %}
+      <p>Previous reviews:</p>
+      <ul>
+      {% for rev in reviews %}
+        {% if rev.id != last_review.id %}
+          <li>
+            <a href="{{ url_for("review", pname=project.name, rid=rev.id) }}">{{ rev.id }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+{% endif %}
+
+
+{% endblock %}

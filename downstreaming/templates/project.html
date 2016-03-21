@@ -37,18 +37,29 @@ Project "{{ project.name }}"
 
 {% elif project.state == "review" %}
     This project is under review.
+    <a href="{{ url_for('review', pname=project.name, rid=last_review.id) }}">
+        Check out the review progress
+    </a>.
 
 {% elif project.state == "done" %}
     This project has been accepted.
     <a href="{{ url_for('review', pname=project.name, rid=last_review.id) }}">
         Check out the last review
     </a>.
+    <a class="btn btn-primary btn-sm" href="{{ url_for('newreview', pname=project.name) }}">
+        <span class="glyphicon glyphicon-arrow-right"></span>
+        Request a reassessment
+    </a>
 
 {% elif project.state == "rejected" %}
     This project has been rejected.
     <a href="{{ url_for('review', pname=project.name, rid=last_review.id) }}">
         Would you like to know more?
     </a>.{#  ^-- gratuitious reference to Starship Troopers #}
+    <a class="btn btn-primary btn-sm" href="{{ url_for('newreview', pname=project.name) }}">
+        <span class="glyphicon glyphicon-arrow-right"></span>
+        Request a reassessment
+    </a>
 
 {% endif %}
 </p>
@@ -56,7 +67,7 @@ Project "{{ project.name }}"
 
 {% if project.state == "review" %}
 <h2>Current review</h2>
-<p>On {{ lastreview.date_start }} by {{ lastreview.reviewers|join(", ") }}.</p>
+<p>On {{ last_review.date_start }} by {{ last_review.reviewers|join(", ") }}.</p>
 {% endif %}
 
 

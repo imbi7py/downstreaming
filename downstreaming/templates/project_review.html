@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+
+{% macro render_field(field) %}
+    <div class="form-group {% if field.errors %}has-error{% endif %}">
+        <label for="{{ field.id }}" class="col-sm-2 col-md-3 control-label">
+            {{ field.label.text }}
+        </label>
+        <div class="col-sm-8 col-md-6">
+            {{ field(**kwargs) }}
+            {% if field.errors %}
+            <span class="help-block">
+                {% for error in field.errors %}
+                {{ error }}
+                {% endfor %}
+            </span>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% block content %}
+
+<h1>Review {{ review.id }} for {{ project.name }}</h1>
+
+<ul>
+<li>Go to <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a></li>
+<li>Go to <a href="{{ url_for("reviews", pname=project.name) }}">{{ project.name }} reviews</a></li>
+{% with last_review = project.last_review %}
+  {% if review.id != last_review.id %}
+    <li>Go to <a href="{{ url_for("review", pname=project.name, rid=last_review.id) }}">latest review</a></li>
+  {% endif %}
+{% endwith %}
+</ul>
+
+<div class="project-attributes">
+<p>Reason for review: {{review.reason}}</p>
+<p>Review started: {{review.date_start}}</p>
+{% if review.date_end %}
+<p>Review ended: {{review.date_end}}</p>
+{% endif %}
+</div>
+
+{% if not review.date_end %}
+<div class="row">
+
+<form class="form-horizontal" role="form" method="post">
+    {% if form.errors %}
+    <div class="alert alert-danger">
+        There are errors in the form, please fix them.
+    </div>
+    {% endif %}
+    {{ render_field(form.approved, class_="form-control", autofocus=True) }}
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-md-offset-3 col-sm-6 col-md-6 submit">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</form>
+{% endif %}
+
+</div>
+
+{% endblock %}
