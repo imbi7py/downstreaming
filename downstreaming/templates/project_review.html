@@ -35,9 +35,10 @@
 
 <div class="project-attributes">
 <p>Reason for review: {{review.reason}}</p>
-<p>Review started: {{review.date_start}}</p>
+<p>Review started: {{review.date_start}} ({{review.date_start|humanize}})</p>
 {% if review.date_end %}
-<p>Review ended: {{review.date_end}}</p>
+<p>Review ended: {{review.date_end}} ({{review.date_end|humanize}})</p>
+<p>Review result: {{review.approved|review_result}}</p>
 {% endif %}
 </div>
 

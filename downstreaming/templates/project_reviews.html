@@ -13,14 +13,20 @@ Go to <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</
   {% with last_review = project.last_review %}
     <p>
       Latest review: <a href="{{ url_for("review", pname=project.name, rid=last_review.id) }}">{{ last_review.id }}</a>
+      {% if last_review.date_end %}
+      ({{last_review.approved|review_result}} {{last_review.date_end|humanize}})
+      {% else %}
+      (Review still in progress)
+      {% endif %}
     </p>
     {% if reviews|length > 1 %}
       <p>Previous reviews:</p>
       <ul>
-      {% for rev in reviews %}
-        {% if rev.id != last_review.id %}
+      {% for review in reviews %}
+        {% if review.id != last_review.id %}
           <li>
-            <a href="{{ url_for("review", pname=project.name, rid=rev.id) }}">{{ rev.id }}</a>
+            <a href="{{ url_for("review", pname=project.name, rid=review.id) }}">{{ review.id }}</a>
+            ({{review.approved|review_result}} {{review.date_end|humanize}})
           </li>
         {% endif %}
       {% endfor %}

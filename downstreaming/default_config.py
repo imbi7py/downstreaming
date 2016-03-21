@@ -32,5 +32,5 @@ STATES = {
     "new": "just created", # No review yet. Don't delete this one.
     "review": "under review",
     "rejected": "rejected",
-    "done": "included",
+    "approved": "approved",
 }

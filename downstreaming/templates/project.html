@@ -41,14 +41,14 @@ Project "{{ project.name }}"
         Check out the review progress
     </a>.
 
-{% elif project.state == "done" %}
-    This project has been accepted.
+{% elif project.state == "approved" %}
+    This project has been approved.
     <a href="{{ url_for('review', pname=project.name, rid=last_review.id) }}">
         Check out the last review
     </a>.
     <a class="btn btn-primary btn-sm" href="{{ url_for('newreview', pname=project.name) }}">
         <span class="glyphicon glyphicon-arrow-right"></span>
-        Request a reassessment
+        Start a reassessment
     </a>
 
 {% elif project.state == "rejected" %}
@@ -58,7 +58,7 @@ Project "{{ project.name }}"
     </a>.{#  ^-- gratuitious reference to Starship Troopers #}
     <a class="btn btn-primary btn-sm" href="{{ url_for('newreview', pname=project.name) }}">
         <span class="glyphicon glyphicon-arrow-right"></span>
-        Request a reassessment
+        Start a reassessment
     </a>
 
 {% endif %}

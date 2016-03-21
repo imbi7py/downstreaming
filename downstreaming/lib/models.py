@@ -64,10 +64,10 @@ class Project(Base):
         # want to make the app easily configurable. Then we can extract the
         # exit states here instead of hardcoding.
         # TODO: use a workflow engine.
-        return self.state not in ["done", "rejected"]
+        return self.state not in ["approved", "rejected"]
     @active.expression
     def active(cls):
-        return sa.not_(cls.state.in_(["done", "rejected"]))
+        return sa.not_(cls.state.in_(["approved", "rejected"]))
 
 
 class Review(Base):
@@ -79,6 +79,7 @@ class Review(Base):
                            ondelete="cascade", onupdate="cascade"))
     project    = sa.orm.relationship("Project", back_populates="reviews")
     reason = sa.Column(sa.Text, nullable=False)
+    approved = sa.Column(sa.Boolean)
     date_start = sa.Column(sa.DateTime,
                            index=True, nullable=False, default=sa.func.now())
     date_end   = sa.Column(sa.DateTime, index=True)

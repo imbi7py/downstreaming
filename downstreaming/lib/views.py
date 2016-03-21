@@ -117,14 +117,13 @@ def review(db, method, data, pname, rid):
     result = Result({"project": project, "review": review, "form": form})
     if method == "POST" and form.validate():
         review.date_end = datetime.utcnow()
-        # TODO: store review result in model
-        # review.approved = form.approved.data
+        review.approved = form.approved.data
         if form.approved.data:
-            project.state = "done"
-            success_message = "Project review approved"
+            project.state = "approved"
+            success_message = "Project status is now approved"
         else:
             project.state = "rejected"
-            success_message = "Project review declined"
+            success_message = "Project status is now rejected"
         try:
             db.commit()
         except SQLAlchemyError:
