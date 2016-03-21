@@ -1,0 +1,13 @@
+alembic
+Flask
+Flask-WTF
+MarkupSafe
+python-fedora
+python-openid
+python-openid-cla
+python-openid-teams
+six
+SQLAlchemy
+chardet
+arrow
+pygments

@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Proposed projects</h1>
+
+
+{% if projects|length == 0 %}
+<p>No projects here.</p>
+{% else %}
+<ul>
+{% for project in projects %}
+    {% with rev = project.last_review %}
+    <li>
+        <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a>
+        {% if rev %}
+        (last review: <a href="{{ url_for("review", pname=project.name, rid=rev.id) }}">{{ rev.id }}</a>)
+        {% else %}
+        (no review yet)
+        {% endif %}
+    </li>
+    {% endwith %}
+{% endfor %}
+</ul>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,15 @@
+
+{% macro project_list(projects, title=None) %}
+    {% if title %}
+    <h3>{{ title }}</h3>
+    {% endif %}
+    {% if projects %}
+    <ul>
+        {% for project in projects %}
+        <li><a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a> - {{ project.summary }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted">(nothing here)</p>
+    {% endif %}
+{% endmacro %}

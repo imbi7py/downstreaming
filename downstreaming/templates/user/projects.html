@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Projects for {{ g.fas_user.username }}</h1>
+
+
+
+<h2>Proposed projects</h2>
+
+{% if projects|length == 0 %}
+<p>No projects here.</p>
+{% else %}
+<ul>
+{% for project in projects %}
+    {% with rev = project.last_review %}
+    <li>
+        <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a>
+        {% if rev %}
+        (last review: <a href="{{ url_for("review", pname=project.name, rid=rev.id) }}">{{ rev.id }}</a>)
+        {% else %}
+        (no review yet)
+        {% endif %}
+    </li>
+    {% endwith %}
+{% endfor %}
+</ul>
+{% endif %}
+
+
+<h2>Old projects</h2>
+
+{% if old_projects|length == 0 %}
+<p>No projects here.</p>
+{% else %}
+<ul>
+{% for project in old_projects %}
+    <li>
+        <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a>
+    </li>
+{% endfor %}
+{% endif %}
+
+
+
+{% endblock %}

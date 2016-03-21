@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Reviews for {{ g.fas_user.username }}</h1>
+
+{% if reviews|length == 0 %}
+<p>No reviews here.</p>
+{% else %}
+<ul>
+{% for review in reviews %}
+    <li>
+        <a href="{{ url_for("review", pname=review.project.name, rid=review.id) }}">Review {{ review.id }}</a>
+        for project
+        <a href="{{ url_for("project", name=review.project.name) }}">{{ review.project.name }}</a>
+    </li>
+{% endfor %}
+</ul>
+{% endif %}
+
+
+{% endblock %}
+

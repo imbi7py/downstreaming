@@ -1,0 +1,43 @@
+/*
+ * Generic
+ */
+
+
+.flashmessage > div {
+    text-align: center;
+}
+.flashmessage .alert {
+    display: inline-block;
+}
+.flashmessage.dismissible {
+    position: absolute;
+    left: 50%;
+}
+.flashmessage.dismissible .alert-dismissible {
+    position: relative;
+    left: -50%;
+    z-index: 5;
+}
+
+
+/*
+ * New project form
+ */
+
+form div.submit {
+    margin-top: 1.5em;
+}
+
+
+/*
+ * Project page
+ */
+#watch-toggle {
+    margin-left: 2em;
+}
+.project-status .btn {
+    margin-left: 1em;
+}
+.project-attributes {
+    margin-top: 2em;
+}

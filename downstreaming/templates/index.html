@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% import 'macros.html' as macros %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>Downstream Review Server</h1>
+    <p>
+        Where projects are reviewed before inclusion.
+        <a href="https://github.com/ncoghlan/downstream" role="button">Learn more</a>
+    </p>
+</div>
+
+
+<div class="row">
+<div class="col-xs-12 text-center">
+    <form class="form-inline" role="form" action="{{ url_for('search') }}">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control input-lg"
+                   placeholder="Search projects..." autofocus />
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-lg btn-primary">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </span>
+        </div>
+    </form>
+</div>
+</div>
+
+<div class="row">
+<h2>Recent activity</h2>
+
+<div class="col-xs-12 col-sm-6 col-lg-4">
+    {{ macros.project_list(recent_projects, 'Recently submitted') }}
+</div>
+
+<div class="col-xs-12 col-sm-6 col-lg-4">
+    {{ macros.project_list(updated_revs, 'Updated reviews') }}
+</div>
+
+<div class="col-xs-12 col-sm-6 col-lg-4">
+    {{ macros.project_list(projects_without_rev, 'Projects without review') }}
+</div>
+
+</div>
+
+
+{% endblock %}

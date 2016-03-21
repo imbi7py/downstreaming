@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+{% set last_review = project.last_review %}
+
+<h1>
+Project "{{ project.name }}"
+<button class="btn btn-default btn-sm" id="watch-toggle">
+    {% if iswatched %}
+    <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+    Unwatch
+    {% else %}
+    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+    Watch
+    {% endif %}
+</button>
+</h1>
+
+<div class="project-attributes">
+    <p><strong>Summary:</strong> {{ project.summary }}</p>
+    <p><strong>Description:</strong> {{ project.description }}</p>
+</div>
+
+<hr />
+
+<p class="text-info project-status">
+
+{# XXX: update here if you change the states list #}
+
+{% if project.state == "new" %}
+    This project has no review yet.
+    <a class="btn btn-primary btn-sm" href="{{ url_for('newreview', pname=project.name) }}">
+        <span class="glyphicon glyphicon-arrow-right"></span>
+        Start a review
+    </a>
+
+{% elif project.state == "review" %}
+    This project is under review.
+
+{% elif project.state == "done" %}
+    This project has been accepted.
+    <a href="{{ url_for('review', pname=project.name, rid=last_review.id) }}">
+        Check out the last review
+    </a>.
+
+{% elif project.state == "rejected" %}
+    This project has been rejected.
+    <a href="{{ url_for('review', pname=project.name, rid=last_review.id) }}">
+        Would you like to know more?
+    </a>.{#  ^-- gratuitious reference to Starship Troopers #}
+
+{% endif %}
+</p>
+
+
+{% if project.state == "review" %}
+<h2>Current review</h2>
+<p>On {{ lastreview.date_start }} by {{ lastreview.reviewers|join(", ") }}.</p>
+{% endif %}
+
+
+{% endblock %}
