@@ -30,8 +30,8 @@ setup(
     url="https://github.com/ncoghlan/downstreaming",
     license="AGPLv3",
     classifiers=[
-        "Development Status :: 3 - Alpha",
-        "License :: OSI Approved :: GNU Affero General Public License v3 (AGPLv3)",
+        "Development Status :: 2 - Pre-Alpha",
+        "License :: OSI Approved :: GNU Affero General Public License v3",
         "Programming Language :: Python :: 2",
         ],
     keywords='packaging',
