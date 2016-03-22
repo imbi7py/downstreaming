@@ -46,23 +46,6 @@ def is_service_admin(user):
 
     return len(admins.intersection(set(user.groups))) > 0
 
-
-def admin_required(function):
-    """ Flask decorator to ensure that the user is logged in. """
-    @wraps(function)
-    def decorated_function(*args, **kwargs):
-        ''' Wrapped function actually checking if the user is logged in.
-        '''
-        if not is_authenticated():
-            return flask.redirect(flask.url_for(
-                'auth_login', next=flask.request.url))
-        elif not is_service_admin(flask.g.fas_user):
-            flask.flash('You are not an admin', 'danger')
-            return flask.redirect(flask.url_for('index'))
-        return function(*args, **kwargs)
-    return decorated_function
-
-
 def handle_result(result, template):
     for msg, style in result.flash:
         flask.flash(msg, style)
@@ -70,6 +53,6 @@ def handle_result(result, template):
         return flask.redirect(flask.url_for(
             result.redirect[0], **result.redirect[1]))
     if result.code != 200:
-        result.context["code"] = code
+        result.context["code"] = result.code
         template = "error.html"
     return flask.render_template(template, **result.context), result.code

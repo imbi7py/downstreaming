@@ -26,11 +26,3 @@ SECRET_KEY = 'Change-me-Im-famous'
 REQUIRED_GROUPS = ('packager', 'provenpackager')
 # To get admin rights, the user must be a member of one of these groups
 ADMIN_GROUPS = ('sysadmin-main', )
-
-# Project states
-STATES = {
-    "new": "just created", # No review yet. Don't delete this one.
-    "review": "under review",
-    "rejected": "rejected",
-    "approved": "approved",
-}

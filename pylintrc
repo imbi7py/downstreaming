@@ -1,2 +1,3 @@
 [pylint]
 disable = missing-docstring,locally-disabled
+generated-members = query,connection

@@ -21,30 +21,28 @@ from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm.exc import NoResultFound
 from .. import forms
-from .models import Project, Review, Reviewer, Comment
+from .models import Project, Review
 from .utils import Result
 
 
 def index(db):
-    recent_projects = db.query(Project).filter(Project.active
+    recent_projects = db.query(Project
         ).order_by(Project.submitted.desc()).limit(10).all()
-    updated_revs = db.query(Review).join(Comment
-        ).order_by(Comment.date.desc()).limit(10).all()
-    projects_without_rev = db.query(Project).filter(
-        Project.active, ~Project.reviews.any()
+    active_reviews = db.query(Project).join(Review
+        ).order_by(Review.date_start.desc()).limit(10).all()
+    unreviewed_projects = db.query(Project).filter(~Project.reviews.any()
         ).order_by(Project.submitted.desc()).limit(10).all()
     return Result({"recent_projects": recent_projects,
-                   "updated_revs": updated_revs,
-                   "projects_without_rev": projects_without_rev,
+                   "updated_revs": active_reviews,
+                   "projects_without_rev": unreviewed_projects
                    })
 
 # Project display and registration
 
 def projects(db):
-    projects = db.query(Project).filter(Project.active).all()
-    projects.sort(key=lambda p: p.last_review_activity)
+    # TODO: Order by start date of most recent review (unreviewed first)
+    projects = db.query(Project).order_by(Project.submitted.desc()).all()
     return Result({"projects": projects})
-
 
 def project(db, name):
     try:
@@ -164,12 +162,13 @@ def newreview(db, method, data, pname, username):
 # User specific pages
 
 def user_projects(db, username):
-    all_projects = db.query(Project).filter_by(owner=username).all()
-    all_projects.sort(key=lambda p: p.last_review_activity)
+    # TODO: Track project responsibility/point-of-contact info
+    # TODO: Query SQLA directly for projects with & without open reviews
+    all_projects = db.query(Project).all()
     projects = []
     old_projects = []
     for project in all_projects:
-        if project.active:
+        if project.state in ["new", "review"]:
             projects.append(project)
         else:
             old_projects.append(project)
@@ -177,7 +176,6 @@ def user_projects(db, username):
 
 
 def user_reviews(db, username):
-    reviews = db.query(Review).join(Reviewer).filter(
-            Reviewer.reviewer_name == username
-        ).order_by(Review.date_start).all()
+    # TODO: Track review responsibility/point-of-contact info
+    reviews = db.query(Review).order_by(Review.date_start.desc()).all()
     return Result({"reviews": reviews})
