@@ -159,9 +159,14 @@ def user_projects(db, username):
     # TODO: Track project responsibility/point-of-contact info
     active_projects = db.query(Project).filter(
                         Project.state.in_(["new", "review"])).all()
-    old_projects = db.query(Project).filter(
-                        ~Project.state.in_(["new", "review"])).all()
-    return Result({"projects": active_projects, "old_projects": old_projects})
+    approved_projects = db.query(Project).filter(
+                          Project.state == "approved").all()
+    rejected_projects = db.query(Project).filter(
+                          Project.state == "rejected").all()
+    return Result({"projects": active_projects,
+                   "approved_projects": approved_projects,
+                   "rejected_projects": rejected_projects,
+                   })
 
 
 def user_reviews(db, username):

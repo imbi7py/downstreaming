@@ -6,7 +6,7 @@
 
 
 
-<h2>Proposed projects</h2>
+<h2>Projects under review</h2>
 
 {% if projects|length == 0 %}
 <p>No projects here.</p>
@@ -17,7 +17,7 @@
     <li>
         <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a>
         {% if rev %}
-        (last review: <a href="{{ url_for("review", pname=project.name, rid=rev.id) }}">{{ rev.id }}</a>)
+        (active review: <a href="{{ url_for("review", pname=project.name, rid=rev.id) }}">{{ rev.id }}</a>)
         {% else %}
         (no review yet)
         {% endif %}
@@ -28,19 +28,37 @@
 {% endif %}
 
 
-<h2>Old projects</h2>
+<h2>Approved projects</h2>
 
-{% if old_projects|length == 0 %}
-<p>No projects here.</p>
-{% else %}
 <ul>
-{% for project in old_projects %}
+{% if approved_projects|length == 0 %}
+    <li>
+        <p>No projects here.</p>
+    </li>
+{% else %}
+{% for project in approved_projects %}
     <li>
         <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a>
     </li>
 {% endfor %}
 {% endif %}
+</ul>
 
+<h2>Rejected projects</h2>
+
+<ul>
+{% if rejected_projects|length == 0 %}
+    <li>
+        <p>No projects here.</p>
+    </li>
+{% else %}
+{% for project in rejected_projects %}
+    <li>
+        <a href="{{ url_for("project", name=project.name) }}">{{ project.name }}</a>
+    </li>
+{% endfor %}
+{% endif %}
+</ul>
 
 
 {% endblock %}
