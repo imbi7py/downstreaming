@@ -1,5 +1,6 @@
 include *.md
 recursive-include downstreaming *.html *.js
 graft downstreaming/static
-include downstreaming/migrations/alembic.ini downstreaming/migrations/script.py.mako
-include downstreaming/migrations/versions/*.py
+include downstreaming/lib/alembic/env.py
+include downstreaming/lib/alembic/script.py.mako
+include downstreaming/lib/alembic/versions/*.py
