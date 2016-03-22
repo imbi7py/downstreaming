@@ -6,7 +6,6 @@ Views for the main web service
 
 from __future__ import absolute_import, unicode_literals, print_function
 
-import os
 import flask
 from flask.ext.fas import fas_login_required
 from six import string_types

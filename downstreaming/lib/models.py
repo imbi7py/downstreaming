@@ -5,8 +5,6 @@ from __future__ import absolute_import, unicode_literals, print_function
 
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.ext.associationproxy import association_proxy
 
 
 Base = declarative_base()

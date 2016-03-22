@@ -11,7 +11,6 @@ import re
 import flask
 from flask_wtf import Form
 from wtforms import (BooleanField, StringField, TextAreaField, validators)
-from wtforms.widgets import html_params, HTMLString
 
 from .lib.models import Project
 
@@ -22,12 +21,12 @@ def strip(s):
     else:
         return ""
 
-def existing_project(form, field):
+def existing_project(_form, field):
     if flask.g.db.query(Project).filter_by(name=field.data).count() != 0:
         raise validators.ValidationError("Project already exists.")
 
-PROJECT_NAME_RE = re.compile('^[\w_.-]+$')
-def project_naming_format(form, field):
+PROJECT_NAME_RE = re.compile(r'^[\w_.-]+$')
+def project_naming_format(_form, field):
     if not PROJECT_NAME_RE.match(field.data):
         raise validators.ValidationError(
             "Only letters, numbers, dots, dashes and underscores are allowed "
