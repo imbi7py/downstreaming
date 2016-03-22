@@ -1,5 +1,5 @@
 include *.md
-recursive-include fresque *.html *.js
-graft fresque/static
-include fresque/migrations/alembic.ini fresque/migrations/script.py.mako
-include fresque/migrations/versions/*.py
+recursive-include downstreaming *.html *.js
+graft downstreaming/static
+include downstreaming/migrations/alembic.ini downstreaming/migrations/script.py.mako
+include downstreaming/migrations/versions/*.py
