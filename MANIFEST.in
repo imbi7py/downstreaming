@@ -3,4 +3,5 @@ recursive-include downstreaming *.html *.js
 graft downstreaming/static
 include downstreaming/lib/alembic/env.py
 include downstreaming/lib/alembic/script.py.mako
+include downstreaming/lib/alembic/versions/README
 include downstreaming/lib/alembic/versions/*.py
