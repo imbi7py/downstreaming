@@ -37,7 +37,7 @@ setup(
     keywords='packaging',
     #packages=find_packages(exclude=["*.test", "test", "*.test.*"]),
     packages=find_packages(),
-    #include_package_data=True,
+    include_package_data=True,
     install_requires=reqfile("requirements.txt"),
     #test_suite = "downstreaming.test",
     entry_points={
