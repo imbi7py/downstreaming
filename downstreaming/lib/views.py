@@ -93,7 +93,7 @@ def reviews(db, pname):
     items = db.query(Review).join(Project).order_by(Review.id.desc()).all()
     return Result({"project": parent_project, "reviews": items})
 
-def review(db, method, data, pname, rid):
+def review(db, method, data, pname, rid, username):
     parent_project, err_result = _lookup_project(db, pname)
     if parent_project is None:
         return err_result
@@ -109,6 +109,7 @@ def review(db, method, data, pname, rid):
     result = Result({"project": parent_project, "review": this_review, "form": form})
     if method == "POST" and form.validate():
         this_review.date_end = datetime.utcnow()
+        this_review.reviewer = username
         this_review.approved = form.approved.data
         if form.approved.data:
             parent_project.state = "approved"
@@ -138,6 +139,7 @@ def newreview(db, method, data, pname, username):
             return result
         new_review = Review(
             project_id=parent_project.id,
+            submitter=username,
             reason=form.reason.data
         )
         db.add(new_review)
@@ -170,6 +172,8 @@ def user_projects(db, username):
 
 
 def user_reviews(db, username):
-    # TODO: Track review responsibility/point-of-contact info
-    linked_reviews = db.query(Review).order_by(Review.date_start.desc()).all()
+    linked_reviews = db.query(Review
+                    ).filter(Review.submitter == username
+                    ).order_by(Review.date_start.desc()
+                    ).all()
     return Result({"reviews": linked_reviews})

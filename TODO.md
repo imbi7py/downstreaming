@@ -1,6 +1,6 @@
 # Major TODO items
 
-- track users responsible for review submissions and resolutions
+- model Users as their own entity, rather than as username strings
 - add a REST API to facilitate integration with other services
 - switch to flask-security and drop hard dependency on FAS
 - switch Docker container to use mod_wsgi-express

@@ -44,7 +44,7 @@ def reviews(pname):
 def review(pname, rid):
     result = views.review(
         flask.g.db, flask.request.method, flask.request.form,
-        pname, rid)
+        pname, rid, flask.g.fas_user.username)
     return flask.render_template("project_review.html", **result.context)
 
 @APP.route("/projects/<pname>/reviews/new", methods=["GET", "POST"])

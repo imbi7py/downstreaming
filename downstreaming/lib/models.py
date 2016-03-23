@@ -20,6 +20,7 @@ class Project(Base):
                             nullable=False, index=True, unique=True)
     summary     = sa.Column(sa.String(255), nullable=False)
     description = sa.Column(sa.Text, nullable=False)
+    # TODO: model users properly, rather than as strings
     owner       = sa.Column(sa.String(255))
     # TODO: derive the project state from the underlying review status
     # "new" -> last_review is None
@@ -49,10 +50,16 @@ class Review(Base):
                            sa.ForeignKey("projects.id",
                            ondelete="cascade", onupdate="cascade"))
     project    = sa.orm.relationship("Project", back_populates="reviews")
+    # Initial review creation
+    # TODO: model users properly, rather than as strings
+    submitter  = sa.Column(sa.String(255))
     reason = sa.Column(sa.Text, nullable=False)
-    approved = sa.Column(sa.Boolean)
     date_start = sa.Column(sa.DateTime,
                            index=True, nullable=False, default=sa.func.now())
+    # Review resolution
+    # TODO: model users properly, rather than as strings
+    reviewer  = sa.Column(sa.String(255))
+    approved = sa.Column(sa.Boolean)
     date_end   = sa.Column(sa.DateTime, index=True)
 
     def __repr__(self):
